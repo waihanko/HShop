@@ -1,0 +1,19 @@
+{
+  "introItems": [
+    {
+      "imageUrl": "assets/images/intro1.png",
+      "title": "Item 1",
+      "description": "Description 1"
+    },
+    {
+      "imageUrl": "assets/images/intro2.png",
+      "title": "Item 2",
+      "description": "Description 2"
+    },
+    {
+      "imageUrl": "assets/images/intro3.png",
+      "title": "Item 3",
+      "description": "Description 3"
+    }
+  ]
+}
