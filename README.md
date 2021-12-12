@@ -18,3 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 Reference
 - https://dribbble.com/shots/15664222-Gejedin-Gadget-Store-Mobile-Apps-Next-Flow
 - https://dribbble.com/shots/16755367-WECOM-Ecommerce-App
+- https://dribbble.com/shots/4642039-Introduction-Slider
