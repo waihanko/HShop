@@ -15,9 +15,6 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => AppIntroProvider(),
-        )
       ],
       child: const MyApp()));
 }

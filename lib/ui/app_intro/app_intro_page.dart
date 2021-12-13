@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_constants/dimens.dart';
 import 'package:h_shop/app_utils/locator.dart';
@@ -16,10 +17,11 @@ class AppIntroPage extends StatefulWidget {
 
 class _AppIntroPageState extends State<AppIntroPage> {
   var sharePreference = locator<SharedPreferenceHelper>();
+  var provider = locator<AppIntroProvider>();
+  double _position = 0;
 
   @override
-  void initState()  {
-    var provider = Provider.of<AppIntroProvider>(context, listen: false);
+  void initState() {
     provider.getAppIntroItems();
     super.initState();
   }
@@ -29,38 +31,72 @@ class _AppIntroPageState extends State<AppIntroPage> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  height: MediaQuery.of(context).size.height * 0.1 - MediaQuery.of(context).padding.top,
-                  child:  TextButton(
-                    child: const NormalTextWidget('Skip'),
-                    onPressed: () {
-                      print('Pressed');
-                    }
-                  ),
+      body: ChangeNotifierProvider(
+        create: (context) => provider,
+        child: Consumer<AppIntroProvider>(
+          builder: (context, model, child) => model.appIntroItemsDao == null
+              ? Container(
+                  color: Colors.yellow,
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).padding.top,
+                    ),
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton(
+                          child: const NormalTextWidget('Skip'),
+                          onPressed: () {
+                            print('Pressed');
+                          }),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: PageView(
+                          onPageChanged: (page) =>
+                              provider.changeCurrentPageIndex(page.toDouble()),
+                          children: model.appIntroItemsDao!.introItems!
+                              .map((popularMovie) => Container(
+                                  width: 200,
+                                  height: 200,
+                                  color: Colors.red,
+                                  child: Text("${popularMovie.title}")))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: Row(
+                        children: [
+                          Visibility(
+                            visible: provider.currentPageIndex != 0,
+                            child: Container(width: 40, color: Colors.yellow),
+                            maintainSize: true,
+                            maintainAnimation: true,
+                            maintainState: true,
+                          ),
+                          Expanded(
+                            child: DotsIndicator(
+                              dotsCount:
+                                  model.appIntroItemsDao!.introItems!.length,
+                              position: provider.currentPageIndex,
+                              decorator: DotsDecorator(),
+                            ),
+                          ),
+                          (provider.currentPageIndex == model.appIntroItemsDao!.introItems!.length - 1)
+                              ? Container(width: 40, color: Colors.lightGreen)
+                              : Container(
+                                  width: 40,
+                                  color: Colors.deepOrange,
+                                ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                ),
-              ],
-            ),
-
-            Container(
-              color: Colors.blue,
-              height: MediaQuery.of(context).size.height * 0.1,
-            ),
-          ],
         ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.cable),
-        onPressed: ()=> themeProvider.switchTheme() ,
       ),
     );
   }
