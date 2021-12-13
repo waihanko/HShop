@@ -6,13 +6,13 @@ import 'package:h_shop/data_source/repository.dart';
 
 class RepositoryImpl extends Repository {
 
-  static final RepositoryImpl _singleton = RepositoryImpl.internal();
-
-  factory RepositoryImpl() {
-    return _singleton;
-  }
-
-  RepositoryImpl.internal();
+  // static final RepositoryImpl _singleton = RepositoryImpl.internal();
+  //
+  // factory RepositoryImpl() {
+  //   return _singleton;
+  // }
+  //
+  // RepositoryImpl.internal();
 
   @override
   Future<AppIntroItemsDao> getLocalAppIntroList() async {

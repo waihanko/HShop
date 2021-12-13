@@ -13,6 +13,8 @@ class AppBarSectionView extends StatefulWidget implements PreferredSizeWidget {
 class _AppBarSectionViewState extends State<AppBarSectionView> {
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+
+    );
   }
 }
