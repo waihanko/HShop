@@ -1,21 +1,23 @@
-# h_shop
+# HMarket(WIP)
 
-A new Flutter project.
+This is Ecommerce project
 
-## Getting Started
+## Technology Included
+- Scalable project architecture
+- GetIt for Dependency Injection
+- Provider
+- Retrofit for API
+- Hive for Local Storage
+- Notification
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## What you can get
+- Customizable app-intro(DataSource from local or remote)
+- Dynamic Theming
+- ect.(I will add later)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-Reference
-- https://dribbble.com/shots/15664222-Gejedin-Gadget-Store-Mobile-Apps-Next-Flow
-- https://dribbble.com/shots/16755367-WECOM-Ecommerce-App
-- https://dribbble.com/shots/4642039-Introduction-Slider
+#Reference
+- [Commerce1](https://dribbble.com/shots/15664222-Gejedin-Gadget-Store-Mobile-Apps-Next-Flow)
+- [Commerce2](https://dribbble.com/shots/16755367-WECOM-Ecommerce-App)
+- [Intro Slider](https://dribbble.com/shots/4642039-Introduction-Slider)
