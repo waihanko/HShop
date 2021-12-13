@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_utils/locator.dart';
-import 'package:h_shop/ui/app_intro/app_intro_screen.dart';
 import 'package:h_shop/view_model/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'app_constants/router.dart';
-import 'data_source/repository_impl.dart';
-import 'data_source/shared_pref/share_pref_helper.dart';
+import 'view_model/app_intro_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
+  var themeProvider = locator<ThemeProvider>();
+  var appIntroProvider = locator<AppIntroProvider>();
 
-  runApp(MultiProvider(
-
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
-        ),
-      ],
-      child: const MyApp()));
+  return runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(
+        create: (context) => themeProvider,
+      ),
+      ChangeNotifierProvider(
+        create: (context) => appIntroProvider,
+      ),
+    ], child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

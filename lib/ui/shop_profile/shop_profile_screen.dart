@@ -12,10 +12,11 @@ class ShopProfileScreen extends StatefulWidget {
 }
 
 class _ShopProfileScreenState extends State<ShopProfileScreen> {
+  var themeProvider = locator<ThemeProvider>();
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    //final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
         appBar: AppBarSectionView(),

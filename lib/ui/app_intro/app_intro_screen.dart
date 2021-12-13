@@ -33,94 +33,91 @@ class _AppIntroScreenState extends State<AppIntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => provider,
-        child: Consumer<AppIntroProvider>(
-          builder: (context, appInfoProvider, child) => appInfoProvider
-                      .appIntroItemsDao ==
-                  null
-              ? Container(
-                  color: Colors.transparent,
-                )
-              : Column(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
+      body: Consumer<AppIntroProvider>(
+        builder: (context, appInfoProvider, child) => appInfoProvider
+                    .appIntroItemsDao ==
+                null
+            ? Container(
+                color: Colors.transparent,
+              )
+            : Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).padding.top,
+                  ),
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                        child: const NormalTextWidget('Skip'),
+                        onPressed: () {
+                          print('Pressed');
+                        }),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (page) =>
+                            provider.changeCurrentPageIndex(page.toDouble()),
+                        children: appInfoProvider
+                            .appIntroItemsDao!.introItems!
+                            .map((popularMovie) => SizedBox(
+                                width: 200,
+                                height: 200,
+                                child: Center(
+                                    child: NormalTextWidget(
+                                        "${popularMovie.title}"))))
+                            .toList(),
+                      ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomRight,
-                      child: TextButton(
-                          child: const NormalTextWidget('Skip'),
-                          onPressed: () {
-                            print('Pressed');
-                          }),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: PageView(
-                          controller: pageController,
-                          onPageChanged: (page) =>
-                              provider.changeCurrentPageIndex(page.toDouble()),
-                          children: appInfoProvider
-                              .appIntroItemsDao!.introItems!
-                              .map((popularMovie) => SizedBox(
-                                  width: 200,
-                                  height: 200,
-                                  child: Center(
-                                      child: NormalTextWidget(
-                                          "${popularMovie.title}"))))
-                              .toList(),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: Row(
+                      children: [
+                        Visibility(
+                          visible: provider.currentPageIndex != 0,
+                          maintainState: true,
+                          maintainAnimation: true,
+                          maintainSize: true,
+                          child: ClickableWireItem(
+                            color: Colors.grey,
+                            onPress: () => onTapChange(-1),
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Row(
-                        children: [
-                          Visibility(
-                            visible: provider.currentPageIndex != 0,
-                            maintainState: true,
-                            maintainAnimation: true,
-                            maintainSize: true,
-                            child: ClickableWireItem(
-                              color: Colors.grey,
-                              onPress: () => onTapChange(-1),
+                        Expanded(
+                          child: DotsIndicator(
+                            dotsCount: appInfoProvider
+                                .appIntroItemsDao!.introItems!.length,
+                            position: provider.currentPageIndex,
+                            decorator: DotsDecorator(
+                              size: const Size.square(9.0),
+                              activeSize: const Size(18.0, 9.0),
+                              spacing: const EdgeInsets.symmetric(
+                                  horizontal: MARGIN_SMALL),
+                              activeShape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(MARGIN_MEDIUM)),
                             ),
                           ),
-                          Expanded(
-                            child: DotsIndicator(
-                              dotsCount: appInfoProvider
-                                  .appIntroItemsDao!.introItems!.length,
-                              position: provider.currentPageIndex,
-                              decorator: DotsDecorator(
-                                size: const Size.square(9.0),
-                                activeSize: const Size(18.0, 9.0),
-                                spacing: const EdgeInsets.symmetric(
-                                    horizontal: MARGIN_SMALL),
-                                activeShape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(MARGIN_MEDIUM)),
+                        ),
+                        (provider.currentPageIndex ==
+                                appInfoProvider.appIntroItemsDao!.introItems!
+                                        .length -
+                                    1)
+                            ? ClickableWireItem(
+                                color: Colors.lightGreen,
+                                onPress: () => onTapDone(),
+                              )
+                            : ClickableWireItem(
+                                color: Colors.grey,
+                                onPress: () => onTapChange(1),
                               ),
-                            ),
-                          ),
-                          (provider.currentPageIndex ==
-                                  appInfoProvider.appIntroItemsDao!.introItems!
-                                          .length -
-                                      1)
-                              ? ClickableWireItem(
-                                  color: Colors.lightGreen,
-                                  onPress: () => onTapDone(),
-                                )
-                              : ClickableWireItem(
-                                  color: Colors.grey,
-                                  onPress: () => onTapChange(1),
-                                ),
-                        ],
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-        ),
+                  ),
+                ],
+              ),
       ),
     );
   }
