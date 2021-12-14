@@ -19,7 +19,7 @@ class TitleTextWidget extends StatelessWidget {
       overflow: TextOverflow.fade,
       style: TextStyle(
         fontSize: fontSize,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
         color: textColor,
         fontFamily: "sarabun",
       ),
