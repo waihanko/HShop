@@ -49,9 +49,7 @@ class _AppIntroScreenState extends State<AppIntroScreen> {
                     alignment: Alignment.bottomRight,
                     child: TextButton(
                         child: const NormalTextWidget('Skip'),
-                        onPressed: () {
-                          print('Pressed');
-                        }),
+                        onPressed: () => onTapDone()),
                   ),
                   Expanded(
                     child: SizedBox(

@@ -5,7 +5,6 @@ class NormalTextWidget extends StatefulWidget {
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
-  final Color textColor;
   final int? maxLines;
   final double lineHeight;
   final TextOverflow? textOverflow;
@@ -15,7 +14,6 @@ class NormalTextWidget extends StatefulWidget {
   const NormalTextWidget(this.text, {
     this.fontSize = TEXT_REGULAR_2X,
     this.fontWeight = FontWeight.w400,
-    this.textColor = Colors.black,
     this.maxLines = 1,
     this.lineHeight =  1.3,
     this.letterSpacing = 0,
@@ -39,7 +37,6 @@ class _NormalTextWidgetState extends State<NormalTextWidget> {
       style: TextStyle(
           fontSize: widget.fontSize,
           fontWeight: widget.fontWeight,
-          color: widget.textColor,
           height: widget.lineHeight,
           fontFamily: "sarabun",
           letterSpacing: widget.letterSpacing
