@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_constants/dimens.dart';
 
-class HeadingTextWidget extends StatelessWidget {
+class TitleTextWidget extends StatelessWidget {
   final String text;
   final Color textColor;
   final double fontSize;
 
-  const HeadingTextWidget(
+  const TitleTextWidget(
     this.text, {
     this.textColor = Colors.black,
-    this.fontSize = TEXT_REGULAR_3X,
+    this.fontSize = TEXT_REGULAR_2X,
   });
 
   @override

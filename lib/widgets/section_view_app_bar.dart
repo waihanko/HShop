@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:h_shop/widgets/widget_heading_text.dart';
 
 class AppBarSectionView extends StatefulWidget implements PreferredSizeWidget {
-  const AppBarSectionView({Key? key}) : super(key: key);
+  final Widget? title;
+  final Widget? action;
+
+  const AppBarSectionView({Key? key, this.title, this.action}) : super(key: key);
 
   @override
   _AppBarSectionViewState createState() => _AppBarSectionViewState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 20);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 1.5);
 }
 
 class _AppBarSectionViewState extends State<AppBarSectionView> {
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       toolbarHeight: widget.preferredSize.height,
-      backgroundColor: Colors.red,
-      leading: const Icon(Icons.arrow_back_ios_rounded),
-      title: const Text("This Is Title"),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_rounded),
+        onPressed: () => Navigator.pop(context),
+      ),
+      title: widget.title,
+      titleSpacing: 0,
+      centerTitle: false,
+      actions: [
+        widget.action??const SizedBox()
+      ],
     );
   }
 }

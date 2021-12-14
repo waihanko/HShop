@@ -5,8 +5,8 @@ import 'package:h_shop/app_constants/share_pref_constant.dart';
 import 'package:h_shop/app_utils/locator.dart';
 import 'package:h_shop/data_source/shared_pref/share_pref_helper.dart';
 import 'package:h_shop/view_model/app_intro_provider.dart';
+import 'package:h_shop/widgets/shape_item.dart';
 import 'package:h_shop/widgets/widget_normal_text.dart';
-import 'package:h_shop/widgets/wire_frame_clickable_item.dart';
 import 'package:provider/provider.dart';
 
 class AppIntroScreen extends StatefulWidget {
@@ -78,7 +78,7 @@ class _AppIntroScreenState extends State<AppIntroScreen> {
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
-                          child: ClickableWireItem(
+                          child: ShapeItem(
                             color: Colors.grey,
                             onPress: () => onTapChange(-1),
                           ),
@@ -103,11 +103,11 @@ class _AppIntroScreenState extends State<AppIntroScreen> {
                                 appInfoProvider.appIntroItemsDao!.introItems!
                                         .length -
                                     1)
-                            ? ClickableWireItem(
+                            ? ShapeItem(
                                 color: Colors.lightGreen,
                                 onPress: () => onTapDone(),
                               )
-                            : ClickableWireItem(
+                            : ShapeItem(
                                 color: Colors.grey,
                                 onPress: () => onTapChange(1),
                               ),
