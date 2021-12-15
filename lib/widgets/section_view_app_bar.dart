@@ -11,7 +11,7 @@ class AppBarSectionView extends StatefulWidget implements PreferredSizeWidget {
   _AppBarSectionViewState createState() => _AppBarSectionViewState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 1.5);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 1.2);
 }
 
 class _AppBarSectionViewState extends State<AppBarSectionView> {

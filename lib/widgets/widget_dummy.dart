@@ -31,9 +31,9 @@ class _DummyWidgetState extends State<DummyWidget> {
         decoration: BoxDecoration(
           color: widget.color,
           shape: widget.boxShape,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(MARGIN_MEDIUM),
-          ),
+          borderRadius: (widget.boxShape != BoxShape.circle)? const BorderRadius.all(
+              Radius.circular(MARGIN_MEDIUM),
+          ):null,
         ),
         width: widget.boxWidth,
         height: widget.boxHeight,

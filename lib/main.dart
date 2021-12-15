@@ -5,12 +5,14 @@ import 'package:provider/provider.dart';
 
 import 'app_constants/router.dart';
 import 'view_model/app_intro_provider.dart';
+import 'view_model/shop_profile_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   var themeProvider = locator<ThemeProvider>();
   var appIntroProvider = locator<AppIntroProvider>();
+  var shopProfileProvider = locator<ShopProfileProvider>();
 
   return runApp(
     MultiProvider(providers: [
@@ -20,15 +22,19 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) => appIntroProvider,
       ),
+      ChangeNotifierProvider(
+        create: (context) => shopProfileProvider,
+      ),
     ], child: const MyApp()),
   );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-     final _themeProvider = Provider.of<ThemeProvider>(context);
+    final _themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

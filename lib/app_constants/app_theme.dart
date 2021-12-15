@@ -9,7 +9,8 @@ final darkTheme = ThemeData(
     accentColor: Colors.white,
     accentIconTheme: const IconThemeData(color: Colors.black),
     dividerColor: Colors.black12,
-    appBarTheme: const AppBarTheme(elevation: 0, color: Colors.black54));
+    appBarTheme: const AppBarTheme(elevation: 0, color: Colors.black),
+);
 
 final lightTheme = ThemeData(
     primarySwatch: Colors.grey,
