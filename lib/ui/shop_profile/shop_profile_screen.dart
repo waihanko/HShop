@@ -5,6 +5,7 @@ import 'package:h_shop/app_constants/dimens.dart';
 import 'package:h_shop/app_utils/locator.dart';
 import 'package:h_shop/view_model/shop_profile_provider.dart';
 import 'package:h_shop/view_model/theme_provider.dart';
+import 'package:h_shop/widgets/section_view_app_bar.dart';
 import 'package:h_shop/widgets/widget_background.dart';
 import 'package:h_shop/widgets/widget_dummy.dart';
 import 'package:h_shop/widgets/widget_normal_text.dart';
@@ -31,6 +32,7 @@ class _ShopProfileScreenState extends State<ShopProfileScreen> {
 
   @override
   void initState() {
+    shopProfileProvider.toolBarHeight = widget.preferredSize.height;
     super.initState();
     for (int j = 0; j < numberOfItemsPerList; j++) {
       _innerList.add(const ColorRow());
@@ -39,65 +41,26 @@ class _ShopProfileScreenState extends State<ShopProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    shopProfileProvider.toolBarHeight = MediaQuery.of(context).padding.top;
-    shopProfileProvider.expandedHeight = MediaQuery.of(context).size.height * 0.35;
-    shopProfileProvider.toolBarHeight = widget.preferredSize.height;
-
-    double expandedHeight = MediaQuery.of(context).size.height * 0.35;
-    double size = 80;
-    double collapsePercent = 100;
+    double expandedHeight = MediaQuery.of(context).size.height * 0.28;
 
     return Scaffold(
       body: Consumer<ShopProfileProvider>(
-        builder: (context, shopProfileProvider, child) =>
-        DefaultTabController(
+        builder: (context, shopProfileProvider, child) => DefaultTabController(
           length: 2,
           child: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
                 SliverAppBar(
-                  toolbarHeight: widget.preferredSize.height,
-                  collapsedHeight: widget.preferredSize.height,
-                  expandedHeight: expandedHeight,
-                  floating: true,
                   pinned: true,
-                  titleSpacing: 0,
-                  title: AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
-                      height: shopProfileProvider.dynamicProfileSize,
-                      child: const DummyWidget(boxShape: BoxShape.circle,color: Colors.amber,)),
-                  backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                  leading: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_rounded,
-                    ),
-                    onPressed: () => Navigator.pop(context),
+                  backgroundColor: Colors.white,
+                  toolbarHeight: shopProfileProvider.toolBarHeight,
+                ),
+                SliverToBoxAdapter(
+                  child: ShopProfileHeaderView(
+                    expandedHeight,
+                    expandedHeight,
                   ),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.more_horiz_rounded),
-                      onPressed: () => {},
-                    )
-                  ],
-                  flexibleSpace: LayoutBuilder(builder:
-                      (BuildContext context, BoxConstraints constraints) {
-                    shopProfileProvider.getCollapsePercent(constraints.biggest.height);
-                    // collapsePercent = ((constraints.biggest.height -  widget.preferredSize.height - MediaQuery.of(context).padding.top)/ (expandedHeight - widget.preferredSize.height)) * 100;
-                    //   print(constraints.biggest.height -  MediaQuery.of(context).padding.top - widget.preferredSize.height  );
-                    //  print(widget.preferredSize.height);
-                    print(shopProfileProvider.dynamicProfileSize);
-                    return Container(
-                      margin: EdgeInsets.only(
-                          top: widget.preferredSize.height),
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight,
-                      child: ShopProfileHeaderView(
-                        constraints.biggest.height,
-                        expandedHeight,
-                      ),
-                    );
-                  }),
                 ),
                 SliverPersistentHeader(
                   delegate: _SliverAppBarDelegate(
@@ -136,22 +99,22 @@ class _ShopProfileScreenState extends State<ShopProfileScreen> {
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
+  _SliverAppBarDelegate(this.tabBar);
 
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
+  final TabBar? tabBar;
 
   @override
-  double get maxExtent => _tabBar.preferredSize.height;
+  double get minExtent => tabBar!.preferredSize.height;
+
+  @override
+  double get maxExtent => tabBar!.preferredSize.height;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Colors.white,
-      child: _tabBar,
+      child: tabBar,
     );
   }
 
@@ -202,54 +165,44 @@ class ShopProfileHeaderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds:200),
-      opacity: dynamicHeight > expandedHeight / 1.8 ? 1.0 : 0.0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const DummyWidget(
-                boxWidth: 68,
-                boxHeight: 68,
-              ),
-              const SizedBox(
-                height: MARGIN_MEDIUM,
-              ),
-              const BackgroundWidget(
-                child: NormalTextWidget("Best Seller"),
-              ),
-              const SizedBox(
-                height: MARGIN_MEDIUM,
-              ),
-              const TitleTextWidget("Han SpaceX Company"),
-              const SizedBox(
-                height: MARGIN_MEDIUM,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  DummyWidget(
-                    boxWidth: 86,
-                    boxHeight: 38,
-                  ),
-                  SizedBox(
-                    width: MARGIN_MEDIUM,
-                  ),
-                  DummyWidget(
-                    boxWidth: 86,
-                    boxHeight: 38,
-                  ),
-                ],
-              )
-            ],
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const DummyWidget(
+          boxWidth: 68,
+          boxHeight: 68,
         ),
-      ),
+        const SizedBox(
+          height: MARGIN_MEDIUM,
+        ),
+        const BackgroundWidget(
+          child: NormalTextWidget("Best Seller"),
+        ),
+        const SizedBox(
+          height: MARGIN_MEDIUM,
+        ),
+        const TitleTextWidget("Han SpaceX Company"),
+        const SizedBox(
+          height: MARGIN_MEDIUM,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            DummyWidget(
+              boxWidth: 86,
+              boxHeight: 38,
+            ),
+            SizedBox(
+              width: MARGIN_MEDIUM,
+            ),
+            DummyWidget(
+              boxWidth: 86,
+              boxHeight: 38,
+            ),
+          ],
+        )
+      ],
     );
   }
 }
