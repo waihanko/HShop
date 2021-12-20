@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "productName": "Xaomi MI9SE",
+      "ProductImageUrl": "Products",
+      "price": 1000,
+      "discountPercent": 50
+    },
+    {
+      "id": 2,
+      "productName": "Xaomi MI10",
+      "ProductImageUrl": "Newest",
+      "price": 1000,
+      "discountPercent": 50
+    },
+    {
+      "id": 3,
+      "productName": "Xaomi Book",
+      "ProductImageUrl": "Popular",
+      "price": 1000,
+      "discountPercent": 50
+    },
+    {
+      "id": 4,
+      "productName": "Category",
+      "ProductImageUrl": "Category",
+      "price": 1000,
+      "discountPercent": 50
+    },
+    {
+      "id": 5,
+      "productName": "Review",
+      "ProductImageUrl": "Review",
+      "price": 1000,
+      "discountPercent": 50
+    }
+  ]
+}

@@ -10,7 +10,7 @@ import 'view_model/shop_profile_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
-  var themeProvider = locator<ThemeProvider>();
+ var themeProvider = locator<ThemeProvider>();
   var appIntroProvider = locator<AppIntroProvider>();
   var shopProfileProvider = locator<ShopProfileProvider>();
 
@@ -34,12 +34,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _themeProvider = Provider.of<ThemeProvider>(context);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: _themeProvider.getTheme(),
+      theme:  context.watch<ThemeProvider>().getTheme(),
       initialRoute: true == true ? '/' : "home",
       onGenerateRoute: AppPageRoute.generateRoute,
     );

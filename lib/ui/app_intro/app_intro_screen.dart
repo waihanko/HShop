@@ -18,11 +18,13 @@ class AppIntroScreen extends StatefulWidget {
 
 class _AppIntroScreenState extends State<AppIntroScreen> {
   var sharePreference = locator<SharedPreferenceHelper>();
-  var provider = locator<AppIntroProvider>();
+
   PageController pageController = PageController(
     initialPage: 0,
     keepPage: true,
   );
+
+  var provider = locator<AppIntroProvider>();
 
   @override
   void initState() {

@@ -1,0 +1,36 @@
+{
+  "profile": {
+    "id" : 1000,
+    "profileImageUrl": "assets/images/intro1.png",
+    "ratingPoint": 1,
+    "shopName": "Han Gyi Production",
+    "messageBoxId": "MB-8907576799",
+    "contactNumber": [
+      "09-123234244",
+      "09-123234245",
+      "09-123234145"
+    ]
+  },
+  "categories": [
+    {
+      "id": 1,
+      "categoryName": "Products"
+    },
+    {
+      "id": 2,
+      "categoryName": "Newest"
+    },
+    {
+      "id": 3,
+      "categoryName": "Popular"
+    },
+    {
+      "id": 4,
+      "categoryName": "Category"
+    },
+    {
+      "id": 5,
+      "categoryName": "Review"
+    }
+  ]
+}

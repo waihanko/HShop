@@ -7,12 +7,12 @@ import 'package:h_shop/data_source/repository_impl.dart';
 class AppIntroProvider with ChangeNotifier {
   var repository = locator<RepositoryImpl>();
 
-  AppIntroItemsDao? appIntroItemsDao;
-  double currentPageIndex = 0;
+  AppIntroItemsDao? _appIntroItemsDao;
+  double _currentPageIndex = 0;
 
   Future<void> getAppIntroItems() async {
     try {
-      appIntroItemsDao = await repository.getLocalAppIntroList();
+      _appIntroItemsDao = await repository.getLocalAppIntroList();
       notifyListeners();
     } catch (_) {
       rethrow;
@@ -20,7 +20,12 @@ class AppIntroProvider with ChangeNotifier {
   }
 
   void changeCurrentPageIndex(double pageIndex) {
-    currentPageIndex = pageIndex;
+    _currentPageIndex = pageIndex;
     notifyListeners();
   }
+
+  double get currentPageIndex => _currentPageIndex;
+
+  AppIntroItemsDao? get appIntroItemsDao => _appIntroItemsDao;
+
 }

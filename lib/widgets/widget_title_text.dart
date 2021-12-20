@@ -21,7 +21,7 @@ class TitleTextWidget extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: FontWeight.w600,
         color: textColor,
-        fontFamily: "sarabun",
+        fontFamily: "Sarabun",
       ),
     );
   }

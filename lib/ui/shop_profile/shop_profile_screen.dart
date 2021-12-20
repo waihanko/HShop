@@ -3,14 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_constants/dimens.dart';
 import 'package:h_shop/app_utils/locator.dart';
+import 'package:h_shop/data_models/daos/shop_profile_dao.dart';
 import 'package:h_shop/view_model/shop_profile_provider.dart';
 import 'package:h_shop/view_model/theme_provider.dart';
-import 'package:h_shop/widgets/section_view_app_bar.dart';
 import 'package:h_shop/widgets/widget_background.dart';
 import 'package:h_shop/widgets/widget_dummy.dart';
 import 'package:h_shop/widgets/widget_normal_text.dart';
 import 'package:h_shop/widgets/widget_title_text.dart';
 import 'package:provider/provider.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ShopProfileScreen extends StatefulWidget implements PreferredSizeWidget {
   const ShopProfileScreen({Key? key}) : super(key: key);
@@ -22,79 +23,155 @@ class ShopProfileScreen extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight) * 1.2;
 }
 
-class _ShopProfileScreenState extends State<ShopProfileScreen> {
+class _ShopProfileScreenState extends State<ShopProfileScreen>
+    with TickerProviderStateMixin {
   var themeProvider = locator<ThemeProvider>();
   var shopProfileProvider = locator<ShopProfileProvider>();
-  List<SliverList> innerLists = [];
   final numLists = [];
-  final numberOfItemsPerList = 100;
+  final numberOfItemsPerList = 3;
   final _innerList = <dynamic>[];
+  TabController? _myTabController;
 
+  // late var themeProvider;
   @override
   void initState() {
-    shopProfileProvider.toolBarHeight = widget.preferredSize.height;
     super.initState();
     for (int j = 0; j < numberOfItemsPerList; j++) {
       _innerList.add(const ColorRow());
     }
+    shopProfileProvider.getShopProfile();
   }
 
   @override
   Widget build(BuildContext context) {
-    double expandedHeight = MediaQuery.of(context).size.height * 0.28;
-
+    //  themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     return Scaffold(
       body: Consumer<ShopProfileProvider>(
-        builder: (context, shopProfileProvider, child) => DefaultTabController(
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  pinned: true,
-                  backgroundColor: Colors.white,
-                  toolbarHeight: shopProfileProvider.toolBarHeight,
-                ),
-                SliverToBoxAdapter(
-                  child: ShopProfileHeaderView(
-                    expandedHeight,
-                    expandedHeight,
-                  ),
-                ),
-                SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegate(
-                    const TabBar(
-                      labelColor: Colors.black87,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: [
-                        Tab(icon: Icon(Icons.info), text: "Tab 1"),
-                        Tab(icon: Icon(Icons.lightbulb_outline), text: "Tab 2"),
-                      ],
-                    ),
-                  ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) => _innerList[index],
-                    childCount: numberOfItemsPerList,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+          builder: (context, shopProfileProvider, child) => getData()),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.height),
         onPressed: () => themeProvider.switchTheme(),
       ),
     );
+  }
+
+  getData() {
+    if (shopProfileProvider.shopProfileDao != null) {
+      _myTabController = TabController(
+          vsync: this,
+          length: shopProfileProvider.shopProfileDao?.categories?.length ?? 0,
+          initialIndex: 0);
+
+      return NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                pinned: true,
+                toolbarHeight: widget.preferredSize.height,
+                floating: true,
+              ),
+              SliverToBoxAdapter(
+                child: ShopProfileHeaderView(
+                  shopProfile: shopProfileProvider.shopProfileDao?.profile,
+                ),
+              ),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    isScrollable: true,
+                    indicator: DotIndicator(
+                      color: Colors.black,
+                      distanceFromCenter: 16,
+                      radius: 3,
+                      paintingStyle: PaintingStyle.fill,
+                    ),
+                    controller: _myTabController,
+                    tabs: shopProfileProvider.shopProfileDao!.categories!
+                        .map(
+                          (item) => Tab(
+                            height: 52,
+                            text: item.categoryName,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+            controller: _myTabController,
+            children: shopProfileProvider.shopProfileDao!.categories!
+                .map(
+                  (item) => getTabBarView(item),
+                )
+                .toList(),
+            // children: [
+            //   CustomScrollView(
+            //     slivers: [
+            //       SliverList(
+            //         delegate: SliverChildBuilderDelegate(
+            //           (BuildContext context, int index) => _innerList[index],
+            //           childCount: numberOfItemsPerList,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // Container(
+            //   child: Center(
+            //     child: Text("Tab 2"),
+            //   ),
+            // ),
+            // Container(
+            //   child: Center(
+            //     child: Text("Tab 3"),
+            //   ),
+            // ),
+            // Container(
+            //   child: Center(
+            //     child: Text("Tab 4"),
+            //   ),
+            // ),
+            // Container(
+            //   child: Center(
+            //     child: Text("Tab 5"),
+            //   ),
+            // ),
+            // ],
+          ));
+    } else {
+      return Container(
+        color: Colors.red,
+      );
+    }
+  }
+
+  Widget getTabBarView(Categories item) {
+    switch (item.id) {
+      case 1:
+        return const ProfileCategoriesPage(
+          bgColor: Colors.red,
+        );
+      case 2:
+        return const ProfileCategoriesPage(
+          bgColor: Colors.brown,
+        );
+      case 3:
+        return const ProfileCategoriesPage(
+          bgColor: Colors.lightGreen,
+        );
+      case 4:
+        return const ProfileCategoriesPage(
+          bgColor: Colors.deepOrange,
+        );
+      case 5:
+        return const ProfileCategoriesPage(
+          bgColor: Colors.lightBlue,
+        );
+      default:
+        return Container();
+    }
   }
 }
 
@@ -120,7 +197,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
 
@@ -154,12 +231,10 @@ class ChattingAppBar extends StatelessWidget {
 }
 
 class ShopProfileHeaderView extends StatelessWidget {
-  final double dynamicHeight;
-  final double expandedHeight;
+  final Profile? shopProfile;
 
-  const ShopProfileHeaderView(
-    this.dynamicHeight,
-    this.expandedHeight, {
+  const ShopProfileHeaderView({
+    this.shopProfile,
     Key? key,
   }) : super(key: key);
 
@@ -169,22 +244,25 @@ class ShopProfileHeaderView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(
+          height: MARGIN_MEDIUM,
+        ),
         const DummyWidget(
           boxWidth: 68,
           boxHeight: 68,
         ),
         const SizedBox(
-          height: MARGIN_MEDIUM,
+          height: MARGIN_CARD_MEDIUM,
         ),
-        const BackgroundWidget(
-          child: NormalTextWidget("Best Seller"),
+        BackgroundWidget(
+          child: NormalTextWidget(shopProfile?.ratingPoint.toString() ?? ""),
         ),
         const SizedBox(
-          height: MARGIN_MEDIUM,
+          height: MARGIN_CARD_MEDIUM,
         ),
-        const TitleTextWidget("Han SpaceX Company"),
+        TitleTextWidget(shopProfile?.shopName ?? ""),
         const SizedBox(
-          height: MARGIN_MEDIUM,
+          height: MARGIN_CARD_MEDIUM,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +279,10 @@ class ShopProfileHeaderView extends StatelessWidget {
               boxHeight: 38,
             ),
           ],
-        )
+        ),
+        const SizedBox(
+          height: MARGIN_LARGE,
+        ),
       ],
     );
   }
@@ -300,3 +381,35 @@ class ColorRowState extends State<ColorRow> {
 
 Color randomColor() =>
     Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+
+class ProfileCategoriesPage extends StatefulWidget {
+  final Color bgColor;
+
+  const ProfileCategoriesPage({this.bgColor = Colors.white, Key? key})
+      : super(key: key);
+
+  @override
+  _ProfileCategoriesPageState createState() => _ProfileCategoriesPageState();
+}
+
+class _ProfileCategoriesPageState extends State<ProfileCategoriesPage> {
+  var shopProfileProvider = locator<ShopProfileProvider>();
+
+  @override
+  void initState() {
+    shopProfileProvider.setTempColor(widget.bgColor);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ShopProfileProvider>(
+      builder: (context, shopProfileProvider, child) => GestureDetector(
+        onTap: () => shopProfileProvider.setTempColor(Colors.deepPurple),
+        child: Container(
+          color: shopProfileProvider.tempBgColor,
+        ),
+      ),
+    );
+  }
+}

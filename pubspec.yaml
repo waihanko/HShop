@@ -39,7 +39,7 @@ dependencies:
   easy_localization: ^3.0.0
   shared_preferences: ^2.0.11
   dots_indicator: ^2.0.0
-
+  tab_indicator_styler: ^2.0.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
