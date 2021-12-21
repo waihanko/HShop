@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:h_shop/data_models/daos/app_intro_dao.dart';
+import 'package:h_shop/data_models/daos/category_list_dao.dart';
 import 'package:h_shop/data_models/daos/product_list_dao.dart';
+import 'package:h_shop/data_models/daos/review_list_dao.dart';
 import 'package:h_shop/data_models/daos/shop_profile_dao.dart';
 import 'package:h_shop/data_source/repository.dart';
 
@@ -30,5 +32,21 @@ class RepositoryImpl extends Repository {
     final String response = await rootBundle.loadString('assets/local_datas/product_list.json');
     var data = json.decode(response);
     return ProductListDao.fromJson(data);
+  }
+
+  @override
+  Future<ReviewListDao> getReviewList() async{
+    //check network
+    final String response = await rootBundle.loadString('assets/local_datas/shop_review_list.json');
+    var data = json.decode(response);
+    return ReviewListDao.fromJson(data);
+  }
+
+  @override
+  Future<CategoryListDao> getCategoryList() async{
+    //check network
+    final String response = await rootBundle.loadString('assets/local_datas/product_category_list.json');
+    var data = json.decode(response);
+    return CategoryListDao.fromJson(data);
   }
 }

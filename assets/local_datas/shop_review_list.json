@@ -1,0 +1,95 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "reviewPoint" : 1,
+      "review": "Cheap Price",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Wai Han Ko"
+      }
+    },
+    {
+      "id": 2,
+      "reviewPoint" : 1,
+      "review": "Good",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Ko Aung"
+      }
+    },
+    {
+      "id": 3,
+      "reviewPoint" : 5,
+      "review": "Cheap Price",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Maung Mya"
+      }
+    },
+    {
+      "id": 4,
+      "reviewPoint" : 3,
+      "review": "Cheap Price",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Ma Khin Hnin Si"
+      }
+    },
+    {
+      "id": 6,
+      "reviewPoint" : 1,
+      "review": "Bad Service",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Wai Han Ko"
+      }
+    },
+    {
+      "id": 7,
+      "reviewPoint" : 1,
+      "review": "Bad Service",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Wai Han Ko"
+      }
+    },
+    {
+      "id": 8,
+      "reviewPoint" : 1,
+      "review": "Bad Service",
+      "reviewImageList" : [
+        "https://imageUrl1",
+        "https://imageUrl2"
+      ],
+      "user": {
+        "profileUrl" : "https://profileUrl1",
+        "name" : "Wai Han Ko"
+      }
+    }
+  ]
+}
