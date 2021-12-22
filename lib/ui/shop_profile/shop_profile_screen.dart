@@ -1,11 +1,17 @@
 import 'dart:math' as math;
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_constants/dimens.dart';
 import 'package:h_shop/app_utils/locator.dart';
+import 'package:h_shop/app_utils/sliver_app_delegete.dart';
 import 'package:h_shop/data_models/daos/shop_profile_dao.dart';
+import 'package:h_shop/ui/shop_profile/category_list_page.dart';
+import 'package:h_shop/ui/shop_profile/product_list_page.dart';
+import 'package:h_shop/ui/shop_profile/review_list_page.dart';
 import 'package:h_shop/view_model/shop_profile_provider.dart';
 import 'package:h_shop/view_model/theme_provider.dart';
+import 'package:h_shop/widgets/section_view_profile_header.dart';
 import 'package:h_shop/widgets/widget_background.dart';
 import 'package:h_shop/widgets/widget_dummy.dart';
 import 'package:h_shop/widgets/widget_normal_text.dart';
@@ -27,11 +33,16 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
     with TickerProviderStateMixin {
   var themeProvider = locator<ThemeProvider>();
   var shopProfileProvider = locator<ShopProfileProvider>();
+  TabController? _tabController;
 
   @override
   void initState() {
     super.initState();
-    shopProfileProvider.getShopProfile();
+    shopProfileProvider.getShopProfile().then((value) {
+      _tabController = TabController(
+          vsync: this,
+          length: shopProfileProvider.shopProfileDao?.categories?.length ?? 0);
+    });
   }
 
   @override
@@ -39,16 +50,15 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
     //  themeProvider = Provider.of<ShopProfileProvider>(context, listen: true);
     return Scaffold(
       body: Consumer<ShopProfileProvider>(
-          builder: (context, shopProfileProvider, child) =>
-              DefaultTabController(
-                  length:
-                      shopProfileProvider.shopProfileDao?.categories?.length ??
-                          0,
-                  child: getData())),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.height),
-        onPressed: () => themeProvider.switchTheme(),
+        builder: (context, shopProfileProvider, child) => DefaultTabController(
+          length: shopProfileProvider.shopProfileDao?.categories?.length ?? 0,
+          child: getData(),
+        ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.height),
+      //   onPressed: () => themeProvider.switchTheme(),
+      // ),
     );
   }
 
@@ -61,15 +71,26 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
                 pinned: true,
                 toolbarHeight: widget.preferredSize.height,
                 floating: true,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_rounded),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _shoppingCartBadge(),
+                  )
+                ],
               ),
               SliverToBoxAdapter(
-                child: ShopProfileHeaderView(
+                child: ShopProfileHeaderSectionView(
                   shopProfile: shopProfileProvider.shopProfileDao?.profile,
                 ),
               ),
               SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
+                delegate: SliverAppBarDelegate(
                   TabBar(
+                    controller: _tabController,
                     isScrollable: true,
                     indicator: DotIndicator(
                       color: Colors.black,
@@ -92,6 +113,7 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
             ];
           },
           body: TabBarView(
+            controller: _tabController,
             children: shopProfileProvider.shopProfileDao!.categories!
                 .map(
                   (item) => getTabBarView(item),
@@ -106,227 +128,39 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
   }
 
   Widget getTabBarView(Categories item) {
-    if (item.id == 1 || item.id == 2 || item.id == 3 ) {
-      return  ProfileCategoriesPage(
+    if (item.id == 1 || item.id == 2 || item.id == 3) {
+      //shopProfileProvider.shopProfileDao!.profile!.setShopName = "HHHH";
+
+      return ProductListPage(
         categoryId: item.id!,
       );
-    }else if(item.id == 4){
-      return  CategoryListPage(
+    } else if (item.id == 4) {
+      return CategoryListPage(
         shopId: item.id!,
       );
-    }
-    else if (item.id == 5) {
-      return  ReviewListPage(
+    } else if (item.id == 5) {
+      return ReviewListPage(
         categoryId: item.id!,
       );
     } else {
       return Container();
     }
   }
-}
 
-class ProfileCategoriesPage extends StatefulWidget {
-  final int categoryId;
-
-  const ProfileCategoriesPage({required this.categoryId, Key? key})
-      : super(key: key);
-
-  @override
-  _ProfileCategoriesPageState createState() => _ProfileCategoriesPageState();
-}
-
-class _ProfileCategoriesPageState extends State<ProfileCategoriesPage> {
-  var shopProfileProvider = locator<ShopProfileProvider>();
-
-  @override
-  void initState() {
-    shopProfileProvider.getProductList(widget.categoryId);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ShopProfileProvider>(
-      builder: (context, shopProfileProvider, child) =>
-          TextButton(
-            child:  Text("${shopProfileProvider.productListDao?.products?.length??""}"),
-            onPressed: () =>{},
-          ),
-    );
-  }
-}
-
-class ReviewListPage extends StatefulWidget {
-  final int categoryId;
-
-  const ReviewListPage({required this.categoryId, Key? key})
-      : super(key: key);
-
-  @override
-  _ReviewListPageState createState() => _ReviewListPageState();
-}
-
-class _ReviewListPageState extends State<ReviewListPage> {
-  var shopProfileProvider = locator<ShopProfileProvider>();
-
-  @override
-  void initState() {
-    shopProfileProvider.getReviewList(widget.categoryId);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ShopProfileProvider>(
-      builder: (context, shopProfileProvider, child) =>
-          TextButton(
-            child:  Text("${shopProfileProvider.reviewListDao?.reviews?.length??""}"),
-            onPressed: () =>{},
-          ),
-    );
-  }
-}
-
-class CategoryListPage extends StatefulWidget {
-  final int shopId;
-
-  const CategoryListPage({required this.shopId, Key? key})
-      : super(key: key);
-
-  @override
-  _CategoryListPageState createState() => _CategoryListPageState();
-}
-
-class _CategoryListPageState extends State<CategoryListPage> {
-  var shopProfileProvider = locator<ShopProfileProvider>();
-
-  @override
-  void initState() {
-    shopProfileProvider.getCategoryList(widget.shopId);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ShopProfileProvider>(
-      builder: (context, shopProfileProvider, child) =>
-          TextButton(
-            child:  Text("${shopProfileProvider.categoryListDao?.categories?.length??""}"),
-            onPressed: () =>{},
-          ),
-    );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.tabBar);
-
-  final TabBar? tabBar;
-
-  @override
-  double get minExtent => tabBar!.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar!.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      child: tabBar,
+  Widget _shoppingCartBadge() {
+    return Badge(
+      position: BadgePosition.topEnd(top: 0, end: 3),
+      animationDuration: const Duration(milliseconds: 300),
+      animationType: BadgeAnimationType.slide,
+      showBadge: shopProfileProvider.cardItems.isNotEmpty,
+      badgeContent: Text(
+        "${shopProfileProvider.cardItems.length}",
+        style: const TextStyle(color: Colors.white),
+      ),
+      child: IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
     );
   }
 
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return true;
-  }
 }
 
-class ChattingAppBar extends StatelessWidget {
-  const ChattingAppBar({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const DummyWidget(
-          boxShape: BoxShape.circle,
-        ),
-        const SizedBox(
-          width: MARGIN_MEDIUM,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            TitleTextWidget("Wai Han Ko's Shop"),
-            SizedBox(
-              height: MARGIN_SMALL,
-            ),
-            NormalTextWidget("Active 3min ago")
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class ShopProfileHeaderView extends StatelessWidget {
-  final Profile? shopProfile;
-
-  const ShopProfileHeaderView({
-    this.shopProfile,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(
-          height: MARGIN_MEDIUM,
-        ),
-        const DummyWidget(
-          boxWidth: 68,
-          boxHeight: 68,
-        ),
-        const SizedBox(
-          height: MARGIN_CARD_MEDIUM,
-        ),
-        BackgroundWidget(
-          child: NormalTextWidget(shopProfile?.ratingPoint.toString() ?? ""),
-        ),
-        const SizedBox(
-          height: MARGIN_CARD_MEDIUM,
-        ),
-        TitleTextWidget(shopProfile?.shopName ?? ""),
-        const SizedBox(
-          height: MARGIN_CARD_MEDIUM,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            DummyWidget(
-              boxWidth: 86,
-              boxHeight: 38,
-            ),
-            SizedBox(
-              width: MARGIN_MEDIUM,
-            ),
-            DummyWidget(
-              boxWidth: 86,
-              boxHeight: 38,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: MARGIN_LARGE,
-        ),
-      ],
-    );
-  }
-}

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:h_shop/app_utils/locator.dart';
 import 'package:h_shop/data_models/daos/category_list_dao.dart';
@@ -18,6 +20,8 @@ class ShopProfileProvider with ChangeNotifier {
   ProductListDao? get productListDao => _productListDao;
   ReviewListDao? get reviewListDao => _reviewListDao;
   CategoryListDao? get categoryListDao => _categoryListDao;
+
+  List<Products> cardItems =[];
 
   Future<void> getShopProfile() async {
     try {
@@ -49,6 +53,25 @@ class ShopProfileProvider with ChangeNotifier {
   Future<void> getCategoryList(int shopId) async {
     try {
       _categoryListDao = await repository.getCategoryList();
+      notifyListeners();
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> addToCardItem(Products item) async {
+    try {
+      cardItems.add(item);
+      notifyListeners();
+      print("${cardItems.length}");
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> removeFromCardItem(Products item) async {
+    try {
+      cardItems.removeWhere((element) => element.id == item.id);
       notifyListeners();
     } catch (_) {
       rethrow;

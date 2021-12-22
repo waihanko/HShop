@@ -112,6 +112,11 @@ class Profile {
   String? get messageBoxId => _messageBoxId;
   List<String>? get contactNumber => _contactNumber;
 
+
+  set setShopName(String value) {
+    _shopName = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
