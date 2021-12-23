@@ -152,9 +152,9 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
       position: BadgePosition.topEnd(top: 0, end: 3),
       animationDuration: const Duration(milliseconds: 300),
       animationType: BadgeAnimationType.slide,
-      showBadge: shopProfileProvider.cardItems.isNotEmpty,
+      showBadge: shopProfileProvider.cardProduct!.isNotEmpty,
       badgeContent: Text(
-        "${shopProfileProvider.cardItems.length}",
+        "${shopProfileProvider.totalQtyInCart}",
         style: const TextStyle(color: Colors.white),
       ),
       child: IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),

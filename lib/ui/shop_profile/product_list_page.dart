@@ -61,7 +61,7 @@ class _ProductListPageState extends State<ProductListPage> {
                         Expanded(
                             flex: 2,
                             child: DummyWidget(
-                              onPress:()=>  shopProfileProvider.addToCardItem(shopProfileProvider.productListDao!.products![index]) ,
+                              onPress:()=>  shopProfileProvider.handleCartItemQuantity(shopProfileProvider.productListDao!.products![index]) ,
                               child: Text("Add"),
                               color: Colors.red,
                             )),
