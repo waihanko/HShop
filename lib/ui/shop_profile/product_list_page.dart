@@ -47,7 +47,7 @@ class _ProductListPageState extends State<ProductListPage> {
                               color: Colors.pink,
                               width: double.infinity,
                               child: Stack(
-                                children: [
+                                children: const [
                                   Positioned(
                                     top: MARGIN_MEDIUM,
                                     left: MARGIN_MEDIUM,

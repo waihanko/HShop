@@ -1,8 +1,6 @@
-import 'dart:math' as math;
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:h_shop/app_constants/dimens.dart';
 import 'package:h_shop/app_utils/locator.dart';
 import 'package:h_shop/app_utils/sliver_app_delegete.dart';
 import 'package:h_shop/data_models/daos/shop_profile_dao.dart';
@@ -12,10 +10,6 @@ import 'package:h_shop/ui/shop_profile/review_list_page.dart';
 import 'package:h_shop/view_model/shop_profile_provider.dart';
 import 'package:h_shop/view_model/theme_provider.dart';
 import 'package:h_shop/widgets/section_view_profile_header.dart';
-import 'package:h_shop/widgets/widget_background.dart';
-import 'package:h_shop/widgets/widget_dummy.dart';
-import 'package:h_shop/widgets/widget_normal_text.dart';
-import 'package:h_shop/widgets/widget_title_text.dart';
 import 'package:provider/provider.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -157,7 +151,7 @@ class _ShopProfileScreenState extends State<ShopProfileScreen>
         "${shopProfileProvider.totalQtyInCart}",
         style: const TextStyle(color: Colors.white),
       ),
-      child: IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
+      child: IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () => Navigator.pushNamed(context, "check_out")),
     );
   }
 
