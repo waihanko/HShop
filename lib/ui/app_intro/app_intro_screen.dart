@@ -8,6 +8,7 @@ import 'package:h_shop/view_model/app_intro_provider.dart';
 import 'package:h_shop/widgets/widget_dummy.dart';
 import 'package:h_shop/widgets/widget_normal_text.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppIntroScreen extends StatefulWidget {
   const AppIntroScreen({Key? key}) : super(key: key);
